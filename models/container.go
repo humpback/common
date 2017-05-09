@@ -120,6 +120,8 @@ type IORecursive struct {
 
 // ContainerStats - define container stats info struct
 type ContainerStats struct {
+	ContainerName string  `json:"ContainerName"`
+	ContainerID   string  `json:"ContainerID"`
 	CPUUsage      string  `json:"CPUUsage"`
 	MemoryUsage   int64   `json:"MemoryUsage"`
 	MemoryLimit   int64   `json:"MemoryLimit"`
@@ -128,6 +130,12 @@ type ContainerStats struct {
 	NetworkOut    int64   `json:"NetowrkOut"`
 	IOBytesRead   int64   `json:"IOBytesRead"`
 	IOBytesWrite  int64   `json:"IOBytesWrite"`
+}
+
+// ContainerStatsWithError - define container stats info struct
+type ContainerStatsWithError struct {
+	Stats ContainerStats `json:"ContainerStats"`
+	Error interface{}    `json:"Error"`
 }
 
 // Parse - parse container from original container info
