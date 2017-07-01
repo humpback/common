@@ -149,7 +149,7 @@ func (container *Container) Parse(origContainer *types.ContainerJSON) {
 	container.NetworkMode = origContainer.HostConfig.NetworkMode.NetworkName()
 	container.Status = origContainer.State
 
-	command := origContainer.Path + strings.Join(origContainer.Args, " ")
+	command := origContainer.Path + " " + strings.Join(origContainer.Args, " ")
 	container.Command = strings.TrimLeft(command, " ")
 
 	for item := range origContainer.Config.ExposedPorts {
