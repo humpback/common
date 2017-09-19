@@ -7,6 +7,7 @@ type Config struct {
 	DockerAPIVersion        string `json:"DockerAPIVersion`
 	DockerRegistryAddress   string `json:"-"`
 	EnableBuildImage        bool   `json:"-"`
+	DockerAgentIPAddr       string `json:"DockerAgentIPAddr"`
 	DockerClusterEnabled    bool   `json:"DockerClusterEnabled"`
 	DockerClusterURIs       string `json:"DockerClusterURIs"`
 	DockerClusterName       string `json:"DockerClusterName"`

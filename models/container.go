@@ -29,25 +29,26 @@ var (
 
 // Container - define container info struct
 type Container struct {
-	ID                string           `json:"Id"`
-	Image             string           `json:"Image"`
-	Command           string           `json:"Command"`
-	Name              string           `json:"Name"`
-	Ports             []PortBinding    `json:"Ports"`
-	Volumes           []VolumesBinding `json:"Volumes"`
-	DNS               []string         `json:"Dns"`
-	Env               []string         `json:"Env"`
-	HostName          string           `json:"HostName"`
-	NetworkMode       string           `json:"NetworkMode"`
-	Status            interface{}      `json:"Status,omitempty"`
-	RestartPolicy     string           `json:"RestartPolicy,omitempty"`
-	RestartRetryCount int              `json:"RestartRetryCount,omitempty"`
-	ExtraHosts        []string         `json:"Extrahosts"`
-	CPUShares         int64            `json:"CPUShares,omitempty"`
-	Memory            int64            `json:"Memory,omitempty"`
-	SHMSize           int64            `json:"SHMSize,omitempty"`
-	Links             []string         `json:"Links"`
-	Ulimits           []*units.Ulimit  `json:"Ulimits"`
+	ID                       string           `json:"Id"`
+	Image                    string           `json:"Image"`
+	Command                  string           `json:"Command"`
+	CommandWithoutEntryPoint string           `json:"CommandWithoutEntryPoint"`
+	Name                     string           `json:"Name"`
+	Ports                    []PortBinding    `json:"Ports"`
+	Volumes                  []VolumesBinding `json:"Volumes"`
+	DNS                      []string         `json:"Dns"`
+	Env                      []string         `json:"Env"`
+	HostName                 string           `json:"HostName"`
+	NetworkMode              string           `json:"NetworkMode"`
+	Status                   interface{}      `json:"Status,omitempty"`
+	RestartPolicy            string           `json:"RestartPolicy,omitempty"`
+	RestartRetryCount        int              `json:"RestartRetryCount,omitempty"`
+	ExtraHosts               []string         `json:"Extrahosts"`
+	CPUShares                int64            `json:"CPUShares,omitempty"`
+	Memory                   int64            `json:"Memory,omitempty"`
+	SHMSize                  int64            `json:"SHMSize,omitempty"`
+	Links                    []string         `json:"Links"`
+	Ulimits                  []*units.Ulimit  `json:"Ulimits"`
 }
 
 // PortBinding - define container port binding info struct
@@ -151,6 +152,7 @@ func (container *Container) Parse(origContainer *types.ContainerJSON) {
 
 	command := origContainer.Path + " " + strings.Join(origContainer.Args, " ")
 	container.Command = strings.TrimLeft(command, " ")
+	container.CommandWithoutEntryPoint = strings.Join(origContainer.Config.Cmd, " ")
 
 	for item := range origContainer.Config.ExposedPorts {
 		containerPort, _ := strconv.Atoi(item.Port())
