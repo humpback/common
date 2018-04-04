@@ -1,11 +1,12 @@
 package models
 
+import "github.com/docker/docker/api/types"
+import "github.com/docker/docker/api/types/container"
+import units "github.com/docker/go-units"
+
 import (
 	"strconv"
 	"strings"
-
-	"github.com/docker/docker/api/types"
-	units "github.com/docker/go-units"
 )
 
 var (
@@ -29,26 +30,27 @@ var (
 
 // Container - define container info struct
 type Container struct {
-	ID                       string           `json:"Id"`
-	Image                    string           `json:"Image"`
-	Command                  string           `json:"Command"`
-	CommandWithoutEntryPoint string           `json:"CommandWithoutEntryPoint"`
-	Name                     string           `json:"Name"`
-	Ports                    []PortBinding    `json:"Ports"`
-	Volumes                  []VolumesBinding `json:"Volumes"`
-	DNS                      []string         `json:"Dns"`
-	Env                      []string         `json:"Env"`
-	HostName                 string           `json:"HostName"`
-	NetworkMode              string           `json:"NetworkMode"`
-	Status                   interface{}      `json:"Status,omitempty"`
-	RestartPolicy            string           `json:"RestartPolicy,omitempty"`
-	RestartRetryCount        int              `json:"RestartRetryCount,omitempty"`
-	ExtraHosts               []string         `json:"Extrahosts"`
-	CPUShares                int64            `json:"CPUShares,omitempty"`
-	Memory                   int64            `json:"Memory,omitempty"`
-	SHMSize                  int64            `json:"SHMSize,omitempty"`
-	Links                    []string         `json:"Links"`
-	Ulimits                  []*units.Ulimit  `json:"Ulimits"`
+	ID                       string              `json:"Id"`
+	Image                    string              `json:"Image"`
+	Command                  string              `json:"Command"`
+	CommandWithoutEntryPoint string              `json:"CommandWithoutEntryPoint"`
+	Name                     string              `json:"Name"`
+	Ports                    []PortBinding       `json:"Ports"`
+	Volumes                  []VolumesBinding    `json:"Volumes"`
+	DNS                      []string            `json:"Dns"`
+	Env                      []string            `json:"Env"`
+	HostName                 string              `json:"HostName"`
+	NetworkMode              string              `json:"NetworkMode"`
+	Status                   interface{}         `json:"Status,omitempty"`
+	RestartPolicy            string              `json:"RestartPolicy,omitempty"`
+	RestartRetryCount        int                 `json:"RestartRetryCount,omitempty"`
+	ExtraHosts               []string            `json:"Extrahosts"`
+	CPUShares                int64               `json:"CPUShares,omitempty"`
+	Memory                   int64               `json:"Memory,omitempty"`
+	SHMSize                  int64               `json:"SHMSize,omitempty"`
+	Links                    []string            `json:"Links"`
+	Ulimits                  []*units.Ulimit     `json:"Ulimits"`
+	LogConfig                container.LogConfig `json:"LogConfig"`
 }
 
 // PortBinding - define container port binding info struct
