@@ -7,6 +7,7 @@ import units "github.com/docker/go-units"
 import (
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -50,6 +51,7 @@ type Container struct {
 	SHMSize                  int64               `json:"SHMSize,omitempty"`
 	Links                    []string            `json:"Links"`
 	Ulimits                  []*units.Ulimit     `json:"Ulimits"`
+	Labels                   map[string]string   `json:"Labels"`
 	LogConfig                container.LogConfig `json:"LogConfig"`
 }
 
@@ -195,4 +197,28 @@ func (container *Container) Parse(origContainer *types.ContainerJSON) {
 	container.SHMSize = origContainer.HostConfig.ShmSize
 	container.Links = origContainer.HostConfig.Links
 	container.Ulimits = origContainer.HostConfig.Ulimits
+}
+
+// ContainerStateString - convert container state to short string format
+func ContainerStateString(state *types.ContainerState) string {
+
+	startedAt, _ := time.Parse(time.RFC3339Nano, state.StartedAt)
+	if state.Running {
+		if state.Paused {
+			return "Paused"
+		}
+		if state.Restarting {
+			return "Restarting"
+		}
+		return "Running"
+	}
+
+	if state.Dead {
+		return "Dead"
+	}
+
+	if startedAt.IsZero() {
+		return "Created"
+	}
+	return "Exited"
 }
