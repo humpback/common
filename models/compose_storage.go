@@ -25,6 +25,8 @@ var (
 	ErrProjectNameInvalid = errors.New("project name invalid")
 	//ErrProjectPackageFileInvalid is exported
 	ErrProjectPackageFileInvalid = errors.New("project package file invalid")
+	//ErrProjectComposeFileEmpty is exported
+	ErrProjectComposeFileEmpty = errors.New("project compose file is empty")
 )
 
 //ProjectJSON is exported
@@ -245,6 +247,10 @@ func (storage *ComposeStorage) ProjectSpec(projectName string) (*ProjectData, er
 	composeBytes, err := ioutil.ReadFile(composeFilePath)
 	if err != nil {
 		return nil, err
+	}
+
+	if len(composeBytes) == 0 {
+		return nil, ErrProjectComposeFileEmpty
 	}
 
 	return &ProjectData{
