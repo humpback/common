@@ -4,6 +4,7 @@ import "github.com/humpback/gounits/compress/tarlib"
 import "github.com/humpback/gounits/httpx"
 import "github.com/humpback/gounits/system"
 import "github.com/humpback/gounits/utils"
+import yaml "gopkg.in/yaml.v2"
 
 import (
 	"context"
@@ -25,8 +26,6 @@ var (
 	ErrProjectNameInvalid = errors.New("project name invalid")
 	//ErrProjectPackageFileInvalid is exported
 	ErrProjectPackageFileInvalid = errors.New("project package file invalid")
-	//ErrProjectComposeFileEmpty is exported
-	ErrProjectComposeFileEmpty = errors.New("project compose file is empty")
 )
 
 //ProjectJSON is exported
@@ -48,6 +47,20 @@ func validateProjectName(projectName string) error {
 
 	if strings.TrimSpace(projectName) == "" {
 		return ErrProjectNameInvalid
+	}
+	return nil
+}
+
+func validateComposeData(composeData string) error {
+
+	var err error
+	buffer := []byte(composeData)
+	if len(buffer) == 0 {
+		return fmt.Errorf("compose data format invalid, data is empty")
+	}
+	template := map[string]interface{}{}
+	if err = yaml.Unmarshal(buffer, &template); err != nil {
+		return fmt.Errorf("compose data format invalid, %s", err)
 	}
 	return nil
 }
@@ -249,8 +262,9 @@ func (storage *ComposeStorage) ProjectSpec(projectName string) (*ProjectData, er
 		return nil, err
 	}
 
-	if len(composeBytes) == 0 {
-		return nil, ErrProjectComposeFileEmpty
+	err = validateComposeData(string(composeBytes))
+	if err != nil {
+		return nil, err
 	}
 
 	return &ProjectData{
@@ -269,6 +283,10 @@ func (storage *ComposeStorage) CreateProjectSpec(createProject CreateProject) (*
 	)
 
 	if err = validateProjectName(createProject.Name); err != nil {
+		return nil, err
+	}
+
+	if err = validateComposeData(createProject.ComposeData); err != nil {
 		return nil, err
 	}
 

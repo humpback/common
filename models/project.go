@@ -26,14 +26,19 @@ type OperateProject struct {
 	Action string `json:"Action"`
 }
 
-// ProjectConfig - define compose project info struct
-type ProjectConfig struct {
-	Name        string          `json:"Name"`
-	HashCode    string          `json:"HashCode"`
-	ComposeData string          `json:"ComposeData"`
-	PackageFile string          `json:"PackageFile"`
-	Timestamp   int64           `json:"Timestamp"`
-	Containers  project.InfoSet `json:"Containers"`
+// ProjectBase - define project base info struct
+type ProjectBase struct {
+	Name       string          `json:"Name"`
+	HashCode   string          `json:"HashCode"`
+	Timestamp  int64           `json:"Timestamp"`
+	Containers project.InfoSet `json:"Containers"`
+}
+
+// ProjectInfo - define compose project info struct
+type ProjectInfo struct {
+	ProjectBase
+	ComposeData string `json:"ComposeData"`
+	PackageFile string `json:"PackageFile"`
 }
 
 // ProjectStatus - define compose project status struct
