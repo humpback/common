@@ -153,6 +153,7 @@ func (container *Container) Parse(origContainer *types.ContainerJSON) {
 	container.HostName = origContainer.Config.Hostname
 	container.NetworkMode = origContainer.HostConfig.NetworkMode.NetworkName()
 	container.Status = origContainer.State
+	container.Labels = origContainer.Config.Labels
 
 	command := origContainer.Path + " " + strings.Join(origContainer.Args, " ")
 	container.Command = strings.TrimLeft(command, " ")
@@ -197,6 +198,7 @@ func (container *Container) Parse(origContainer *types.ContainerJSON) {
 	container.SHMSize = origContainer.HostConfig.ShmSize
 	container.Links = origContainer.HostConfig.Links
 	container.Ulimits = origContainer.HostConfig.Ulimits
+	container.LogConfig = origContainer.HostConfig.LogConfig
 }
 
 // ContainerStateString - convert container state to short string format
